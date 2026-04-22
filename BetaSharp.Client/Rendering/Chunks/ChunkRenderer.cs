@@ -69,7 +69,7 @@ public class ChunkRenderer : IChunkVisibilityVisitor
     private readonly List<Vector3D<int>> _chunkVersionsToRemove = [];
     private readonly List<ChunkToMeshInfo> _dirtyChunks = [];
     private readonly List<ChunkToMeshInfo> _lightingUpdates = [];
-    private readonly Shader _chunkShader;
+    private readonly IShader _chunkShader;
     private int _lastRenderDistance;
     private Vector3D<double> _lastViewPos;
     private int _currentIndex;
@@ -101,7 +101,9 @@ public class ChunkRenderer : IChunkVisibilityVisitor
         _world = world;
         _alternateBlocks = alternateBlocks;
 
-        _chunkShader = new(AssetManager.Instance.getAsset("shaders/chunk.vert").GetTextContent(), AssetManager.Instance.getAsset("shaders/chunk.frag").GetTextContent());
+        _chunkShader = RenderDragon.CreateShader(
+            AssetManager.Instance.getAsset("shaders/chunk.vert").GetTextContent(),
+            AssetManager.Instance.getAsset("shaders/chunk.frag").GetTextContent());
 
         RenderDragon.Api.UseProgram(0);
     }
@@ -256,7 +258,7 @@ public class ChunkRenderer : IChunkVisibilityVisitor
         LoadNewMeshes(renderParams.ViewPos);
 
         RenderDragon.Api.UseProgram(0);
-        Core.VertexArray.Unbind();
+        RenderDragon.UnbindVertexArray();
     }
 
     public void SetFogMode(int mode)
@@ -304,7 +306,7 @@ public class ChunkRenderer : IChunkVisibilityVisitor
         _translucentRenderers.Clear();
 
         RenderDragon.Api.UseProgram(0);
-        Core.VertexArray.Unbind();
+        RenderDragon.UnbindVertexArray();
     }
 
     private void LoadNewMeshes(Vector3D<double> viewPos, int maxChunks = 8)

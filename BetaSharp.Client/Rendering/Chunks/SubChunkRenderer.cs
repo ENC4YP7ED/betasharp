@@ -3,9 +3,6 @@ using BetaSharp.Client.Rendering.Core.OpenGL;
 using BetaSharp.Util;
 using BetaSharp.Util.Maths;
 using Silk.NET.Maths;
-using Shader = BetaSharp.Client.Rendering.Core.Shader;
-using VertexArray = BetaSharp.Client.Rendering.Core.VertexArray;
-
 namespace BetaSharp.Client.Rendering.Chunks;
 
 public class SubChunkRenderer : IDisposable
@@ -36,8 +33,8 @@ public class SubChunkRenderer : IDisposable
     public SubChunkRenderer? AdjacentWest;
     public SubChunkRenderer? AdjacentEast;
 
-    private readonly VertexBuffer<ChunkVertex>[] vertexBuffers = new VertexBuffer<ChunkVertex>[2];
-    private readonly VertexArray[] vertexArrays = new VertexArray[2];
+    private readonly IVertexBuffer<ChunkVertex>[] vertexBuffers = new IVertexBuffer<ChunkVertex>[2];
+    private readonly IVertexArray[] vertexArrays = new IVertexArray[2];
     private readonly int[] vertexCounts = new int[2];
     private bool disposed;
 
@@ -104,7 +101,7 @@ public class SubChunkRenderer : IDisposable
         }
     }
 
-    private unsafe void UploadMesh(VertexBuffer<ChunkVertex>[] buffers, int bufferIdx, Span<ChunkVertex> meshData)
+    private unsafe void UploadMesh(IVertexBuffer<ChunkVertex>[] buffers, int bufferIdx, Span<ChunkVertex> meshData)
     {
         if (buffers[bufferIdx] == null)
         {
@@ -163,7 +160,7 @@ public class SubChunkRenderer : IDisposable
                 (void*)14
             );
 
-            VertexArray.Unbind();
+            RenderDragon.UnbindVertexArray();
         }
     }
 
@@ -175,7 +172,7 @@ public class SubChunkRenderer : IDisposable
         }
     }
 
-    public void Render(Shader shader, int pass, Vector3D<double> viewPos, Matrix4X4<float> modelViewMatrix)
+    public void Render(IShader shader, int pass, Vector3D<double> viewPos, Matrix4X4<float> modelViewMatrix)
     {
         if (disposed) return;
 

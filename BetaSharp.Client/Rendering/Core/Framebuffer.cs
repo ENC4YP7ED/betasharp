@@ -3,7 +3,7 @@ using Silk.NET.OpenGL;
 
 namespace BetaSharp.Client.Rendering.Core;
 
-public class Framebuffer : IDisposable
+public class Framebuffer : IFramebuffer
 {
     private readonly ILogger<Framebuffer> _logger = Log.Instance.For<Framebuffer>();
 

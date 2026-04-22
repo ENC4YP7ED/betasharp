@@ -1,20 +1,17 @@
 using BetaSharp.Client.Options;
 using BetaSharp.Client.Rendering.Core;
+using BetaSharp.Client.Rendering.Core.Textures;
 using Silk.NET.OpenGL;
-using Framebuffer = BetaSharp.Client.Rendering.Core.Framebuffer;
 using GLEnum = BetaSharp.Client.Rendering.Core.OpenGL.GLEnum;
-using Shader = BetaSharp.Client.Rendering.Core.Shader;
-using VertexArray = BetaSharp.Client.Rendering.Core.VertexArray;
-using VertexBuffer = BetaSharp.Client.Rendering.Core.VertexBuffer<float>;
 
 namespace BetaSharp.Client.Rendering;
 
 public class FramebufferManager
 {
-    private readonly Framebuffer _mainFbo;
-    private readonly Shader _gammaShader;
-    private readonly VertexArray _fullscreenQuadVao;
-    private readonly VertexBuffer _fullscreenQuadVbo;
+    private readonly IFramebuffer _mainFbo;
+    private readonly IShader _gammaShader;
+    private readonly IVertexArray _fullscreenQuadVao;
+    private readonly IVertexBuffer<float> _fullscreenQuadVbo;
     private readonly GameOptions _options;
 
     public FramebufferManager(int w, int h, GameOptions options)
@@ -97,7 +94,7 @@ public class FramebufferManager
 
     public void End()
     {
-        Framebuffer.Unbind();
+        RenderDragon.UnbindFramebuffer();
 
         IGL gl = RenderDragon.Api;
         gl.Viewport(0, 0, (uint)Display.getFramebufferWidth(), (uint)Display.getFramebufferHeight());

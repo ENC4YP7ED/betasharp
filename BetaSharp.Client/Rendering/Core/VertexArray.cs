@@ -1,6 +1,6 @@
 namespace BetaSharp.Client.Rendering.Core;
 
-public class VertexArray : IDisposable
+public class VertexArray : IVertexArray
 {
     private uint id;
     private bool disposed;

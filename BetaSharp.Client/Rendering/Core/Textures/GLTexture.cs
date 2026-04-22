@@ -4,7 +4,7 @@ using GLEnum = BetaSharp.Client.Rendering.Core.OpenGL.GLEnum;
 
 namespace BetaSharp.Client.Rendering.Core.Textures;
 
-public class GLTexture : IDisposable
+public class GLTexture : ITexture
 {
     private static readonly ILogger s_logger = Log.Instance.For<GLTexture>();
     private static readonly Dictionary<uint, (string Source, DateTime CreatedAt)> s_activeTextures = [];

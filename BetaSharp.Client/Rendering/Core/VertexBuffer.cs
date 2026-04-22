@@ -2,7 +2,7 @@ using BetaSharp.Client.Rendering.Core.OpenGL;
 
 namespace BetaSharp.Client.Rendering.Core;
 
-public class VertexBuffer<T> : IDisposable where T : unmanaged
+public class VertexBuffer<T> : IVertexBuffer<T> where T : unmanaged
 {
     public static long Allocated;
     private uint id;

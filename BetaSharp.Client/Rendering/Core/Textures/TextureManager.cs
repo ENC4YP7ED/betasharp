@@ -70,7 +70,7 @@ public class TextureManager : IDisposable
 
     public TextureHandle Load(Image<Rgba32> image)
     {
-        GLTexture texture = RenderDragon.CreateTexture("Image_Direct");
+        ITexture texture = RenderDragon.CreateTexture("Image_Direct");
         Load(image, texture, false);
         var handle = new TextureHandle(texture);
         _images[texture.Id] = (image, handle);
@@ -81,7 +81,7 @@ public class TextureManager : IDisposable
     {
         if (_textures.TryGetValue(path, out TextureHandle? handle)) return handle;
 
-        GLTexture texture = RenderDragon.CreateTexture(path);
+        ITexture texture = RenderDragon.CreateTexture(path);
         handle = new TextureHandle(texture);
         _textures[path] = handle;
 
@@ -103,7 +103,7 @@ public class TextureManager : IDisposable
 
     }
 
-    public unsafe void Load(Image<Rgba32> image, GLTexture texture, bool isTerrain)
+    public unsafe void Load(Image<Rgba32> image, ITexture texture, bool isTerrain)
     {
         texture.Bind();
 
@@ -214,7 +214,7 @@ public class TextureManager : IDisposable
     }
 
 
-    public unsafe void Bind(int[] packedARGB, int width, int height, GLTexture texture)
+    public unsafe void Bind(int[] packedARGB, int width, int height, ITexture texture)
     {
         //TODO: this is potentially wrong but shouldn't crash
 
@@ -244,7 +244,7 @@ public class TextureManager : IDisposable
         }
     }
 
-    public void Delete(GLTexture texture)
+    public void Delete(ITexture texture)
     {
         KeyValuePair<string, TextureHandle> textureEntry = _textures.FirstOrDefault(x => x.Value.Texture == texture);
         if (textureEntry.Key != null) _textures.Remove(textureEntry.Key);
@@ -276,7 +276,7 @@ public class TextureManager : IDisposable
         {
             entry.Value.Texture?.Dispose();
 
-            GLTexture newTexture = RenderDragon.CreateTexture(entry.Key);
+            ITexture newTexture = RenderDragon.CreateTexture(entry.Key);
             entry.Value.Texture = newTexture;
 
             try
@@ -299,7 +299,7 @@ public class TextureManager : IDisposable
         {
             entry.Value.Handle.Texture?.Dispose();
 
-            GLTexture newTexture = RenderDragon.CreateTexture(entry.Value.Handle.Texture?.Source ?? "Image_Direct_Reload");
+            ITexture newTexture = RenderDragon.CreateTexture(entry.Value.Handle.Texture?.Source ?? "Image_Direct_Reload");
             entry.Value.Handle.Texture = newTexture;
             Load(entry.Value.Image, newTexture, false);
             _images[newTexture.Id] = entry.Value;
@@ -331,7 +331,7 @@ public class TextureManager : IDisposable
                 ? _terrainHandle
                 : _itemsHandle;
 
-            GLTexture? atlasTexture = atlasHandle?.Texture;
+            ITexture? atlasTexture = atlasHandle?.Texture;
             if (atlasTexture == null) continue;
 
             int targetTileSize = atlasTexture.Width / 16;
@@ -416,7 +416,7 @@ public class TextureManager : IDisposable
         }
     }
 
-    private unsafe void UpdateTileMipmaps(int baseX, int baseY, int dataSize, int targetTileSize, byte[] tileData, GLTexture texture)
+    private unsafe void UpdateTileMipmaps(int baseX, int baseY, int dataSize, int targetTileSize, byte[] tileData, ITexture texture)
     {
         int maxMipLevels = (int)Math.Log2(targetTileSize) + 1;
         byte[] currentData = tileData;

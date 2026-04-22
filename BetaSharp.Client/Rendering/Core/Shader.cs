@@ -4,7 +4,7 @@ using Silk.NET.OpenGL;
 
 namespace BetaSharp.Client.Rendering.Core;
 
-public class Shader : IDisposable
+public class Shader : IShader
 {
     private readonly ILogger<Shader> _logger = Log.Instance.For<Shader>();
     private readonly uint _id;
