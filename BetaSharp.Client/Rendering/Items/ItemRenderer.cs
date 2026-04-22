@@ -115,16 +115,17 @@ public class ItemRenderer : EntityRenderer
 
             for (var23 = 0; var23 < var13; ++var23)
             {
-                RenderDragon.Api.PushMatrix();
+                var24 = 0.0F;
+                var25 = 0.0F;
+                var26 = 0.0F;
                 if (var23 > 0)
                 {
                     var24 = (random.NextFloat() * 2.0F - 1.0F) * 0.3F;
                     var25 = (random.NextFloat() * 2.0F - 1.0F) * 0.3F;
                     var26 = (random.NextFloat() * 2.0F - 1.0F) * 0.3F;
-                    RenderDragon.Api.Translate(var24, var25, var26);
                 }
 
-                RenderDragon.Api.Rotate(180.0F - Dispatcher.PlayerViewY, 0.0F, 1.0F, 0.0F);
+                RenderDragon.BeginGroundItemSpriteInstance(var24, var25, var26, Dispatcher.PlayerViewY);
                 var15.startDrawingQuads();
                 var15.setNormal(0.0F, 1.0F, 0.0F);
                 var15.addVertexWithUV((double)(0.0F - var21), (double)(0.0F - var22), 0.0D, (double)var16, (double)var19);
@@ -132,7 +133,7 @@ public class ItemRenderer : EntityRenderer
                 var15.addVertexWithUV((double)(var20 - var21), (double)(1.0F - var22), 0.0D, (double)var17, (double)var18);
                 var15.addVertexWithUV((double)(0.0F - var21), (double)(1.0F - var22), 0.0D, (double)var16, (double)var18);
                 var15.draw();
-                RenderDragon.Api.PopMatrix();
+                RenderDragon.EndGroundItemSpriteInstance();
             }
         }
 

@@ -50,15 +50,8 @@ public class HeldItemRenderer
             float var7 = (var4 / 16 * 16 + 0.0F) / 256.0F;
             float var8 = (var4 / 16 * 16 + 15.99F) / 256.0F;
             float var9 = 1.0F;
-            float var10 = 0.0F;
-            float var11 = 0.3F;
-            RenderDragon.Api.Enable(GLEnum.RescaleNormal);
-            RenderDragon.Api.Translate(-var10, -var11, 0.0F);
-            float var12 = 1.5F;
-            RenderDragon.Api.Scale(var12, var12, var12);
-            RenderDragon.Api.Rotate(50.0F, 0.0F, 1.0F, 0.0F);
-            RenderDragon.Api.Rotate(335.0F, 0.0F, 0.0F, 1.0F);
-            RenderDragon.Api.Translate(-(15.0F / 16.0F), -(1.0F / 16.0F), 0.0F);
+            float var10 = 1.5F;
+            RenderDragon.BeginHeldTexturedItemTransform(0.0F, -0.3F, var10, 50.0F, 335.0F, -(15.0F / 16.0F), -(1.0F / 16.0F));
             float var13 = 1.0F / 16.0F;
             var3.startDrawingQuads();
             var3.setNormal(0.0F, 0.0F, 1.0F);
@@ -138,7 +131,7 @@ public class HeldItemRenderer
             }
 
             var3.draw();
-            RenderDragon.Api.Disable(GLEnum.RescaleNormal);
+            RenderDragon.EndHeldTexturedItemTransform();
         }
 
         RenderDragon.Api.PopMatrix();

@@ -83,6 +83,11 @@ public static class RenderDragon
     public static void ApplyEyeHeightOffset(float eyeHeightOffset) => Backend.ApplyEyeHeightOffset(eyeHeightOffset);
     public static void BeginBillboard(float x, float y, float z, float scale, float viewYawDegrees, float viewPitchDegrees, bool enableRescaleNormal = true) => Backend.BeginBillboard(x, y, z, scale, viewYawDegrees, viewPitchDegrees, enableRescaleNormal);
     public static void EndBillboard(bool disableRescaleNormal = true) => Backend.EndBillboard(disableRescaleNormal);
+    public static void BeginGroundItemSpriteInstance(float translateX, float translateY, float translateZ, float viewYawDegrees) => Backend.BeginGroundItemSpriteInstance(translateX, translateY, translateZ, viewYawDegrees);
+    public static void EndGroundItemSpriteInstance() => Backend.EndGroundItemSpriteInstance();
+    public static void BeginHeldTexturedItemTransform(float translateX, float translateY, float uniformScale, float yawDegrees, float rollDegrees, float anchorTranslateX, float anchorTranslateY) =>
+        Backend.BeginHeldTexturedItemTransform(translateX, translateY, uniformScale, yawDegrees, rollDegrees, anchorTranslateX, anchorTranslateY);
+    public static void EndHeldTexturedItemTransform() => Backend.EndHeldTexturedItemTransform();
 
     public static void UnbindFramebuffer()
     {

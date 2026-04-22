@@ -176,6 +176,33 @@ public sealed class OpenGLRenderBackend : IRenderBackend
         Api.PopMatrix();
     }
 
+    public void BeginGroundItemSpriteInstance(float translateX, float translateY, float translateZ, float viewYawDegrees)
+    {
+        Api.PushMatrix();
+        Api.Translate(translateX, translateY, translateZ);
+        Api.Rotate(180.0f - viewYawDegrees, 0.0f, 1.0f, 0.0f);
+    }
+
+    public void EndGroundItemSpriteInstance()
+    {
+        Api.PopMatrix();
+    }
+
+    public void BeginHeldTexturedItemTransform(float translateX, float translateY, float uniformScale, float yawDegrees, float rollDegrees, float anchorTranslateX, float anchorTranslateY)
+    {
+        Api.Enable(GLEnum.RescaleNormal);
+        Api.Translate(translateX, translateY, 0.0f);
+        Api.Scale(uniformScale, uniformScale, uniformScale);
+        Api.Rotate(yawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Rotate(rollDegrees, 0.0f, 0.0f, 1.0f);
+        Api.Translate(anchorTranslateX, anchorTranslateY, 0.0f);
+    }
+
+    public void EndHeldTexturedItemTransform()
+    {
+        Api.Disable(GLEnum.RescaleNormal);
+    }
+
     public void UnbindFramebuffer()
     {
         Api.BindFramebuffer(FramebufferTarget.Framebuffer, 0);

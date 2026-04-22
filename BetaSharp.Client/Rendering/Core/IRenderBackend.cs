@@ -30,6 +30,10 @@ public interface IRenderBackend
     void ApplyEyeHeightOffset(float eyeHeightOffset);
     void BeginBillboard(float x, float y, float z, float scale, float viewYawDegrees, float viewPitchDegrees, bool enableRescaleNormal = true);
     void EndBillboard(bool disableRescaleNormal = true);
+    void BeginGroundItemSpriteInstance(float translateX, float translateY, float translateZ, float viewYawDegrees);
+    void EndGroundItemSpriteInstance();
+    void BeginHeldTexturedItemTransform(float translateX, float translateY, float uniformScale, float yawDegrees, float rollDegrees, float anchorTranslateX, float anchorTranslateY);
+    void EndHeldTexturedItemTransform();
 
     void UnbindFramebuffer();
     void UnbindVertexArray();
