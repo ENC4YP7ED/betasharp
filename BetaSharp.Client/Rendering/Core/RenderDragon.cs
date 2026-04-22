@@ -68,6 +68,9 @@ public static class RenderDragon
     public static void CaptureMatrices(out Matrix4X4<float> modelViewMatrix, out Matrix4X4<float> projectionMatrix) => Backend.CaptureMatrices(out modelViewMatrix, out projectionMatrix);
     public static void SetTextureCoordinateOffset(float u, float v) => Backend.SetTextureCoordinateOffset(u, v);
     public static void ResetTextureCoordinateOffset() => Backend.ResetTextureCoordinateOffset();
+    public static void ResetProjectionAndModelView() => Backend.ResetProjectionAndModelView();
+    public static void SetupOrthographicProjection(double left, double right, double bottom, double top, double zNear, double zFar, float modelViewTranslateZ = 0.0f) =>
+        Backend.SetupOrthographicProjection(left, right, bottom, top, zNear, zFar, modelViewTranslateZ);
 
     public static void UnbindFramebuffer()
     {

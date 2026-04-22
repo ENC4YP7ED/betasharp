@@ -38,12 +38,7 @@ public class LoadingScreenRenderer(BetaSharp game) : LoadingDisplay
             ScaledResolution resolution = new(game.Options, game.DisplayWidth, game.DisplayHeight);
 
             RenderDragon.Api.Clear(ClearBufferMask.DepthBufferBit);
-            RenderDragon.Api.MatrixMode(GLEnum.Projection);
-            RenderDragon.Api.LoadIdentity();
-            RenderDragon.Api.Ortho(0.0, resolution.ScaledWidth, resolution.ScaledHeight, 0.0, 100.0, 300.0);
-            RenderDragon.Api.MatrixMode(GLEnum.Modelview);
-            RenderDragon.Api.LoadIdentity();
-            RenderDragon.Api.Translate(0.0f, 0.0f, -200.0f);
+            RenderDragon.SetupOrthographicProjection(0.0, resolution.ScaledWidth, resolution.ScaledHeight, 0.0, 100.0, 300.0, -200.0f);
         }
     }
 
@@ -81,12 +76,7 @@ public class LoadingScreenRenderer(BetaSharp game) : LoadingDisplay
         int height = resolution.ScaledHeight;
 
         RenderDragon.Api.Clear(ClearBufferMask.DepthBufferBit);
-        RenderDragon.Api.MatrixMode(GLEnum.Projection);
-        RenderDragon.Api.LoadIdentity();
-        RenderDragon.Api.Ortho(0.0, width, height, 0.0, 100.0, 300.0);
-        RenderDragon.Api.MatrixMode(GLEnum.Modelview);
-        RenderDragon.Api.LoadIdentity();
-        RenderDragon.Api.Translate(0.0f, 0.0f, -200.0f);
+        RenderDragon.SetupOrthographicProjection(0.0, width, height, 0.0, 100.0, 300.0, -200.0f);
         RenderDragon.Api.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
 
         Tessellator tessellator = Tessellator.instance;

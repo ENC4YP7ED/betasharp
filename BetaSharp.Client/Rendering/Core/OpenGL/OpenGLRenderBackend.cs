@@ -46,6 +46,28 @@ public sealed class OpenGLRenderBackend : IRenderBackend
             projectionValues[12], projectionValues[13], projectionValues[14], projectionValues[15]);
     }
 
+    public void ResetProjectionAndModelView()
+    {
+        Api.MatrixMode(GLEnum.Projection);
+        Api.LoadIdentity();
+        Api.MatrixMode(GLEnum.Modelview);
+        Api.LoadIdentity();
+    }
+
+    public void SetupOrthographicProjection(double left, double right, double bottom, double top, double zNear, double zFar, float modelViewTranslateZ = 0.0f)
+    {
+        Api.MatrixMode(GLEnum.Projection);
+        Api.LoadIdentity();
+        Api.Ortho(left, right, bottom, top, zNear, zFar);
+        Api.MatrixMode(GLEnum.Modelview);
+        Api.LoadIdentity();
+
+        if (modelViewTranslateZ != 0.0f)
+        {
+            Api.Translate(0.0f, 0.0f, modelViewTranslateZ);
+        }
+    }
+
     public void UnbindFramebuffer()
     {
         Api.BindFramebuffer(FramebufferTarget.Framebuffer, 0);

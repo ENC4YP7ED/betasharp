@@ -17,6 +17,8 @@ public interface IRenderBackend
     void CaptureMatrices(out Matrix4X4<float> modelViewMatrix, out Matrix4X4<float> projectionMatrix);
     void SetTextureCoordinateOffset(float u, float v);
     void ResetTextureCoordinateOffset();
+    void ResetProjectionAndModelView();
+    void SetupOrthographicProjection(double left, double right, double bottom, double top, double zNear, double zFar, float modelViewTranslateZ = 0.0f);
 
     void UnbindFramebuffer();
     void UnbindVertexArray();

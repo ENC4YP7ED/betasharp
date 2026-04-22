@@ -316,10 +316,7 @@ public class GameRenderer
             else
             {
                 RenderDragon.Api.Viewport(0, 0, (uint)_client.FramebufferManager.FramebufferWidth, (uint)_client.FramebufferManager.FramebufferHeight);
-                RenderDragon.Api.MatrixMode(GLEnum.Projection);
-                RenderDragon.Api.LoadIdentity();
-                RenderDragon.Api.MatrixMode(GLEnum.Modelview);
-                RenderDragon.Api.LoadIdentity();
+                RenderDragon.ResetProjectionAndModelView();
                 setupHudRender();
             }
 
@@ -820,12 +817,7 @@ public class GameRenderer
     {
         ScaledResolution sr = new(_client.Options, _client.DisplayWidth, _client.DisplayHeight);
         RenderDragon.Api.Clear(ClearBufferMask.DepthBufferBit);
-        RenderDragon.Api.MatrixMode(GLEnum.Projection);
-        RenderDragon.Api.LoadIdentity();
-        RenderDragon.Api.Ortho(0.0D, sr.ScaledWidthDouble, sr.ScaledHeightDouble, 0.0D, 1000.0D, 3000.0D);
-        RenderDragon.Api.MatrixMode(GLEnum.Modelview);
-        RenderDragon.Api.LoadIdentity();
-        RenderDragon.Api.Translate(0.0F, 0.0F, -2000.0F);
+        RenderDragon.SetupOrthographicProjection(0.0D, sr.ScaledWidthDouble, sr.ScaledHeightDouble, 0.0D, 1000.0D, 3000.0D, -2000.0F);
     }
 
     public void DrawVirtualCursor(int x, int y)

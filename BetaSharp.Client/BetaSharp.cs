@@ -411,9 +411,7 @@ public partial class BetaSharp :
         RenderDragon.Api.Enable(GLEnum.AlphaTest);
         RenderDragon.Api.AlphaFunc(GLEnum.Greater, 0.1F);
         RenderDragon.Api.CullFace(GLEnum.Back);
-        RenderDragon.Api.MatrixMode(GLEnum.Projection);
-        RenderDragon.Api.LoadIdentity();
-        RenderDragon.Api.MatrixMode(GLEnum.Modelview);
+        RenderDragon.ResetProjectionAndModelView();
         CheckGLError("Startup");
     }
 
@@ -1783,12 +1781,7 @@ public partial class BetaSharp :
     {
         ScaledResolution var1 = new(Options, DisplayWidth, DisplayHeight);
         RenderDragon.Api.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
-        RenderDragon.Api.MatrixMode(GLEnum.Projection);
-        RenderDragon.Api.LoadIdentity();
-        RenderDragon.Api.Ortho(0.0D, var1.ScaledWidth, var1.ScaledHeight, 0.0D, 1000.0D, 3000.0D);
-        RenderDragon.Api.MatrixMode(GLEnum.Modelview);
-        RenderDragon.Api.LoadIdentity();
-        RenderDragon.Api.Translate(0.0F, 0.0F, -2000.0F);
+        RenderDragon.SetupOrthographicProjection(0.0D, var1.ScaledWidth, var1.ScaledHeight, 0.0D, 1000.0D, 3000.0D, -2000.0F);
         RenderDragon.Api.Viewport(0, 0, (uint)Display.getFramebufferWidth(), (uint)Display.getFramebufferHeight());
         RenderDragon.Api.ClearColor(0.0F, 0.0F, 0.0F, 0.0F);
         Tessellator tessellator = Tessellator.instance;
