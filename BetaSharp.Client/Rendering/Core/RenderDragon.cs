@@ -71,6 +71,8 @@ public static class RenderDragon
     public static void ResetProjectionAndModelView() => Backend.ResetProjectionAndModelView();
     public static void SetupOrthographicProjection(double left, double right, double bottom, double top, double zNear, double zFar, float modelViewTranslateZ = 0.0f) =>
         Backend.SetupOrthographicProjection(left, right, bottom, top, zNear, zFar, modelViewTranslateZ);
+    public static void SetupPerspectiveProjection(float fovY, float aspect, float zNear, float zFar, float projectionTranslateX = 0.0f, float projectionTranslateY = 0.0f, float projectionScale = 1.0f) =>
+        Backend.SetupPerspectiveProjection(fovY, aspect, zNear, zFar, projectionTranslateX, projectionTranslateY, projectionScale);
 
     public static void UnbindFramebuffer()
     {

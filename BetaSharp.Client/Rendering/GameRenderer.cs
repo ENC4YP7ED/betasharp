@@ -137,22 +137,25 @@ public class GameRenderer
     private void renderWorld(float tickDelta)
     {
         _viewDistance = _client.Options.renderDistance * 16.0f;
-        RenderDragon.Api.MatrixMode(GLEnum.Projection);
-        RenderDragon.Api.LoadIdentity();
-
         if (cameraController.CameraZoom != 1.0D)
         {
-            RenderDragon.Api.Translate((float)cameraController.CameraYaw, (float)-cameraController.CameraPitch, 0.0F);
-            RenderDragon.Api.Scale(cameraController.CameraZoom, cameraController.CameraZoom, 1.0D);
-            GLU.gluPerspective(cameraController.GetFov(tickDelta), _client.DisplayWidth / (float)_client.DisplayHeight, 0.05F, _viewDistance * 2.0F);
+            RenderDragon.SetupPerspectiveProjection(
+                cameraController.GetFov(tickDelta),
+                _client.DisplayWidth / (float)_client.DisplayHeight,
+                0.05F,
+                _viewDistance * 2.0F,
+                (float)cameraController.CameraYaw,
+                (float)-cameraController.CameraPitch,
+                (float)cameraController.CameraZoom);
         }
         else
         {
-            GLU.gluPerspective(cameraController.GetFov(tickDelta), _client.DisplayWidth / (float)_client.DisplayHeight, 0.05F, _viewDistance * 2.0F);
+            RenderDragon.SetupPerspectiveProjection(
+                cameraController.GetFov(tickDelta),
+                _client.DisplayWidth / (float)_client.DisplayHeight,
+                0.05F,
+                _viewDistance * 2.0F);
         }
-
-        RenderDragon.Api.MatrixMode(GLEnum.Modelview);
-        RenderDragon.Api.LoadIdentity();
 
         cameraController.ApplyDamageTiltEffect(tickDelta);
         if (_client.Options.ViewBobbing)
@@ -180,17 +183,25 @@ public class GameRenderer
 
     private void renderFirstPersonHand(float tickDelta)
     {
-        RenderDragon.Api.MatrixMode(GLEnum.Projection);
-        RenderDragon.Api.LoadIdentity();
         if (cameraController.CameraZoom != 1.0D)
         {
-            RenderDragon.Api.Translate((float)cameraController.CameraYaw, (float)-cameraController.CameraPitch, 0.0F);
-            RenderDragon.Api.Scale(cameraController.CameraZoom, cameraController.CameraZoom, 1.0D);
+            RenderDragon.SetupPerspectiveProjection(
+                cameraController.GetFov(tickDelta, true),
+                _client.DisplayWidth / (float)_client.DisplayHeight,
+                0.05F,
+                _viewDistance * 2.0F,
+                (float)cameraController.CameraYaw,
+                (float)-cameraController.CameraPitch,
+                (float)cameraController.CameraZoom);
         }
-
-        GLU.gluPerspective(cameraController.GetFov(tickDelta, true), _client.DisplayWidth / (float)_client.DisplayHeight, 0.05F, _viewDistance * 2.0F);
-        RenderDragon.Api.MatrixMode(GLEnum.Modelview);
-        RenderDragon.Api.LoadIdentity();
+        else
+        {
+            RenderDragon.SetupPerspectiveProjection(
+                cameraController.GetFov(tickDelta, true),
+                _client.DisplayWidth / (float)_client.DisplayHeight,
+                0.05F,
+                _viewDistance * 2.0F);
+        }
 
         RenderDragon.Api.PushMatrix();
         cameraController.ApplyDamageTiltEffect(tickDelta);

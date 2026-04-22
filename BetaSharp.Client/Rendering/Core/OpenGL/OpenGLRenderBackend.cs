@@ -68,6 +68,29 @@ public sealed class OpenGLRenderBackend : IRenderBackend
         }
     }
 
+    public void SetupPerspectiveProjection(float fovY, float aspect, float zNear, float zFar, float projectionTranslateX = 0.0f, float projectionTranslateY = 0.0f, float projectionScale = 1.0f)
+    {
+        Api.MatrixMode(GLEnum.Projection);
+        Api.LoadIdentity();
+
+        if (projectionTranslateX != 0.0f || projectionTranslateY != 0.0f)
+        {
+            Api.Translate(projectionTranslateX, projectionTranslateY, 0.0f);
+        }
+
+        if (projectionScale != 1.0f)
+        {
+            Api.Scale(projectionScale, projectionScale, 1.0f);
+        }
+
+        float fH = (float)Math.Tan(fovY / 360.0 * Math.PI) * zNear;
+        float fW = fH * aspect;
+        Api.Frustum(-fW, fW, -fH, fH, zNear, zFar);
+
+        Api.MatrixMode(GLEnum.Modelview);
+        Api.LoadIdentity();
+    }
+
     public void UnbindFramebuffer()
     {
         Api.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
