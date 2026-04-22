@@ -148,6 +148,48 @@ public static class RenderDragon
             handYawDegrees,
             finalTranslateX);
     public static void EndFirstPersonHandPose() => Backend.EndFirstPersonHandPose();
+    public static void BeginFirstPersonMapPose(
+        float swingTranslateX,
+        float swingTranslateY,
+        float swingTranslateZ,
+        float mapTranslateY,
+        float mapTranslateZ,
+        float baseYawDegrees,
+        float mapRollDegrees) =>
+        Backend.BeginFirstPersonMapPose(
+            swingTranslateX,
+            swingTranslateY,
+            swingTranslateZ,
+            mapTranslateY,
+            mapTranslateZ,
+            baseYawDegrees,
+            mapRollDegrees);
+    public static void EndFirstPersonMapPose() => Backend.EndFirstPersonMapPose();
+    public static void BeginFirstPersonMapHandPose(float handTranslateY, float handTranslateZ, float handPitchDegrees, float handRollDegrees, float handYawDegrees) =>
+        Backend.BeginFirstPersonMapHandPose(handTranslateY, handTranslateZ, handPitchDegrees, handRollDegrees, handYawDegrees);
+    public static void EndFirstPersonMapHandPose() => Backend.EndFirstPersonMapHandPose();
+    public static void ApplyFirstPersonMapPanelPose(
+        float swingYawDegrees,
+        float swingRollDegrees,
+        float swingPitchDegrees,
+        float uniformScale,
+        float yawDegrees,
+        float rollDegrees,
+        float translateX,
+        float translateY,
+        float translateZ,
+        float pixelScale) =>
+        Backend.ApplyFirstPersonMapPanelPose(
+            swingYawDegrees,
+            swingRollDegrees,
+            swingPitchDegrees,
+            uniformScale,
+            yawDegrees,
+            rollDegrees,
+            translateX,
+            translateY,
+            translateZ,
+            pixelScale);
 
     public static void UnbindFramebuffer()
     {

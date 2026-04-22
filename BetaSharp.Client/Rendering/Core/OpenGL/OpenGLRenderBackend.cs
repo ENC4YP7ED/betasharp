@@ -269,6 +269,64 @@ public sealed class OpenGLRenderBackend : IRenderBackend
         Api.PopMatrix();
     }
 
+    public void BeginFirstPersonMapPose(
+        float swingTranslateX,
+        float swingTranslateY,
+        float swingTranslateZ,
+        float mapTranslateY,
+        float mapTranslateZ,
+        float baseYawDegrees,
+        float mapRollDegrees)
+    {
+        Api.PushMatrix();
+        Api.Translate(swingTranslateX, swingTranslateY, swingTranslateZ);
+        Api.Translate(0.0f, mapTranslateY, mapTranslateZ);
+        Api.Rotate(baseYawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Rotate(mapRollDegrees, 0.0f, 0.0f, 1.0f);
+        Api.Enable(GLEnum.RescaleNormal);
+    }
+
+    public void EndFirstPersonMapPose()
+    {
+        Api.PopMatrix();
+    }
+
+    public void BeginFirstPersonMapHandPose(float handTranslateY, float handTranslateZ, float handPitchDegrees, float handRollDegrees, float handYawDegrees)
+    {
+        Api.PushMatrix();
+        Api.Translate(0.0f, handTranslateY, handTranslateZ);
+        Api.Rotate(handPitchDegrees, 1.0f, 0.0f, 0.0f);
+        Api.Rotate(handRollDegrees, 0.0f, 0.0f, 1.0f);
+        Api.Rotate(handYawDegrees, 0.0f, 1.0f, 0.0f);
+    }
+
+    public void EndFirstPersonMapHandPose()
+    {
+        Api.PopMatrix();
+    }
+
+    public void ApplyFirstPersonMapPanelPose(
+        float swingYawDegrees,
+        float swingRollDegrees,
+        float swingPitchDegrees,
+        float uniformScale,
+        float yawDegrees,
+        float rollDegrees,
+        float translateX,
+        float translateY,
+        float translateZ,
+        float pixelScale)
+    {
+        Api.Rotate(swingYawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Rotate(swingRollDegrees, 0.0f, 0.0f, 1.0f);
+        Api.Rotate(swingPitchDegrees, 1.0f, 0.0f, 0.0f);
+        Api.Scale(uniformScale, uniformScale, uniformScale);
+        Api.Rotate(yawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Rotate(rollDegrees, 0.0f, 0.0f, 1.0f);
+        Api.Translate(translateX, translateY, translateZ);
+        Api.Scale(pixelScale, pixelScale, pixelScale);
+    }
+
     public void UnbindFramebuffer()
     {
         Api.BindFramebuffer(FramebufferTarget.Framebuffer, 0);

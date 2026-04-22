@@ -168,12 +168,13 @@ public class HeldItemRenderer
         float var14;
         if (itemToRender != null && itemToRender.ItemId == Item.Map.id)
         {
-            RenderDragon.Api.PushMatrix();
             var14 = 0.8F;
             float swingProgress = var3.getSwingProgress(var1);
             var9 = MathHelper.Sin(swingProgress * (float)Math.PI);
             var10 = MathHelper.Sin(MathHelper.Sqrt(swingProgress) * (float)Math.PI);
-            RenderDragon.Api.Translate(-var10 * 0.4F, MathHelper.Sin(MathHelper.Sqrt(swingProgress) * (float)Math.PI * 2.0F) * 0.2F, -var9 * 0.2F);
+            float swingTranslateX = -var10 * 0.4F;
+            float swingTranslateY = MathHelper.Sin(MathHelper.Sqrt(swingProgress) * (float)Math.PI * 2.0F) * 0.2F;
+            float swingTranslateZ = -var9 * 0.2F;
             swingProgress = 1.0F - var4 / 45.0F + 0.1F;
             if (swingProgress < 0.0F)
             {
@@ -186,42 +187,42 @@ public class HeldItemRenderer
             }
 
             swingProgress = -MathHelper.Cos(swingProgress * (float)Math.PI) * 0.5F + 0.5F;
-            RenderDragon.Api.Translate(0.0F, 0.0F * var14 - (1.0F - var2) * 1.2F - swingProgress * 0.5F + 0.04F, -0.9F * var14);
-            RenderDragon.Api.Rotate(90.0F, 0.0F, 1.0F, 0.0F);
-            RenderDragon.Api.Rotate(swingProgress * -85.0F, 0.0F, 0.0F, 1.0F);
-            RenderDragon.Api.Enable(GLEnum.RescaleNormal);
+            RenderDragon.BeginFirstPersonMapPose(
+                swingTranslateX,
+                swingTranslateY,
+                swingTranslateZ,
+                0.0F * var14 - (1.0F - var2) * 1.2F - swingProgress * 0.5F + 0.04F,
+                -0.9F * var14,
+                90.0F,
+                swingProgress * -85.0F);
             bindSkinTexture();
 
             for (int i = 0; i < 2; i++)
             {
                 int var21 = i * 2 - 1;
-                RenderDragon.Api.PushMatrix();
-                RenderDragon.Api.Translate(-0.0F, -0.6F, 1.1F * var21);
-                RenderDragon.Api.Rotate(-45 * var21, 1.0F, 0.0F, 0.0F);
-                RenderDragon.Api.Rotate(-90.0F, 0.0F, 0.0F, 1.0F);
-                RenderDragon.Api.Rotate(59.0F, 0.0F, 0.0F, 1.0F);
-                RenderDragon.Api.Rotate(-65 * var21, 0.0F, 1.0F, 0.0F);
+                RenderDragon.BeginFirstPersonMapHandPose(-0.6F, 1.1F * var21, -45 * var21, -31.0F, -65 * var21);
                 EntityRenderer var11 = EntityRenderDispatcher.Instance.GetEntityRenderObject(_game.Player);
                 PlayerEntityRenderer var12 = (PlayerEntityRenderer)var11;
                 float var13 = 1.0F;
                 RenderDragon.Api.Scale(var13, var13, var13);
                 var12.DrawFirstPersonHand();
-                RenderDragon.Api.PopMatrix();
+                RenderDragon.EndFirstPersonMapHandPose();
             }
 
             var9 = var3.getSwingProgress(var1);
             var10 = MathHelper.Sin(var9 * var9 * (float)Math.PI);
             float var18 = MathHelper.Sin(MathHelper.Sqrt(var9) * (float)Math.PI);
-            RenderDragon.Api.Rotate(-var10 * 20.0F, 0.0F, 1.0F, 0.0F);
-            RenderDragon.Api.Rotate(-var18 * 20.0F, 0.0F, 0.0F, 1.0F);
-            RenderDragon.Api.Rotate(-var18 * 80.0F, 1.0F, 0.0F, 0.0F);
-            var9 = 0.38F;
-            RenderDragon.Api.Scale(var9, var9, var9);
-            RenderDragon.Api.Rotate(90.0F, 0.0F, 1.0F, 0.0F);
-            RenderDragon.Api.Rotate(180.0F, 0.0F, 0.0F, 1.0F);
-            RenderDragon.Api.Translate(-1.0F, -1.0F, 0.0F);
-            var10 = (1 / 64f);
-            RenderDragon.Api.Scale(var10, var10, var10);
+            RenderDragon.ApplyFirstPersonMapPanelPose(
+                -var10 * 20.0F,
+                -var18 * 20.0F,
+                -var18 * 80.0F,
+                0.38F,
+                90.0F,
+                180.0F,
+                -1.0F,
+                -1.0F,
+                0.0F,
+                1 / 64f);
             _game.TextureManager.BindTexture(_game.TextureManager.GetTextureId("/misc/mapbg.png"));
             Tessellator var19 = Tessellator.instance;
             RenderDragon.Api.Normal3(0.0F, 0.0F, -1.0F);
@@ -234,7 +235,7 @@ public class HeldItemRenderer
             var19.draw();
             MapState mapState = ItemMap.getMapState(itemToRender.getDamage(), _game.World);
             mapRenderer.render(_game.Player, _game.TextureManager, mapState);
-            RenderDragon.Api.PopMatrix();
+            RenderDragon.EndFirstPersonMapPose();
         }
         else if (itemToRender != null)
         {

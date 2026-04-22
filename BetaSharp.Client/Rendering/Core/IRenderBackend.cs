@@ -65,6 +65,28 @@ public interface IRenderBackend
         float handYawDegrees,
         float finalTranslateX);
     void EndFirstPersonHandPose();
+    void BeginFirstPersonMapPose(
+        float swingTranslateX,
+        float swingTranslateY,
+        float swingTranslateZ,
+        float mapTranslateY,
+        float mapTranslateZ,
+        float baseYawDegrees,
+        float mapRollDegrees);
+    void EndFirstPersonMapPose();
+    void BeginFirstPersonMapHandPose(float handTranslateY, float handTranslateZ, float handPitchDegrees, float handRollDegrees, float handYawDegrees);
+    void EndFirstPersonMapHandPose();
+    void ApplyFirstPersonMapPanelPose(
+        float swingYawDegrees,
+        float swingRollDegrees,
+        float swingPitchDegrees,
+        float uniformScale,
+        float yawDegrees,
+        float rollDegrees,
+        float translateX,
+        float translateY,
+        float translateZ,
+        float pixelScale);
 
     void UnbindFramebuffer();
     void UnbindVertexArray();
