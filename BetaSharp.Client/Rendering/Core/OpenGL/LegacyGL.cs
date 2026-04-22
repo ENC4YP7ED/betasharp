@@ -158,6 +158,11 @@ public abstract unsafe class LegacyGL : IGL
 
     public abstract void DisableClientState(GLEnum array);
 
+    public virtual void DisableVertexAttribArray(uint index)
+    {
+        SilkGL.DisableVertexAttribArray(index);
+    }
+
     public abstract void DrawArrays(GLEnum mode, int first, uint count);
 
     public abstract void Enable(GLEnum cap);

@@ -8,11 +8,11 @@ public class VertexBuffer<T> : IVertexBuffer<T> where T : unmanaged
     private bool disposed;
     private int size;
 
-    public unsafe VertexBuffer(Span<T> data)
+    public unsafe VertexBuffer(Span<T> data, BufferUsage usage = BufferUsage.StaticDraw)
     {
         id = RenderDragon.Api.GenBuffer();
         RenderDragon.Api.BindBuffer(GLEnum.ArrayBuffer, id);
-        RenderDragon.Api.BufferData<T>(GLEnum.ArrayBuffer, data, GLEnum.StaticDraw);
+        RenderDragon.Api.BufferData<T>(GLEnum.ArrayBuffer, data, ToGLEnum(usage));
         size = data.Length * sizeof(T);
         VertexBufferStats.AllocatedBytes += size;
     }
@@ -27,7 +27,7 @@ public class VertexBuffer<T> : IVertexBuffer<T> where T : unmanaged
         RenderDragon.Api.BindBuffer(GLEnum.ArrayBuffer, id);
     }
 
-    public unsafe void BufferData(Span<T> data)
+    public unsafe void BufferData(Span<T> data, BufferUsage usage = BufferUsage.StaticDraw)
     {
         if (id == 0)
         {
@@ -36,8 +36,8 @@ public class VertexBuffer<T> : IVertexBuffer<T> where T : unmanaged
         else
         {
             RenderDragon.Api.BindBuffer(GLEnum.ArrayBuffer, id);
-            RenderDragon.Api.BufferData(GLEnum.ArrayBuffer, (nuint)(data.Length * sizeof(T)), (void*)0, GLEnum.StaticDraw);
-            RenderDragon.Api.BufferData<T>(GLEnum.ArrayBuffer, data, GLEnum.StaticDraw);
+            RenderDragon.Api.BufferData(GLEnum.ArrayBuffer, (nuint)(data.Length * sizeof(T)), (void*)0, ToGLEnum(usage));
+            RenderDragon.Api.BufferData<T>(GLEnum.ArrayBuffer, data, ToGLEnum(usage));
 
             VertexBufferStats.AllocatedBytes -= size;
             size = data.Length * sizeof(T);
@@ -64,4 +64,10 @@ public class VertexBuffer<T> : IVertexBuffer<T> where T : unmanaged
 
         disposed = true;
     }
+
+    private static GLEnum ToGLEnum(BufferUsage usage) => usage switch
+    {
+        BufferUsage.StreamDraw => GLEnum.StreamDraw,
+        _ => GLEnum.StaticDraw
+    };
 }

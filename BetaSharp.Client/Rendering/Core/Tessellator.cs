@@ -114,6 +114,7 @@ public enum TesselatorCaptureVertexFormat
 public class Tessellator
 {
     private static readonly bool convertQuadsToTriangles = true;
+    private const uint VertexStride = 32;
     private readonly int[] rawBuffer;
     private int vertexCount;
     private double textureU;
@@ -135,7 +136,8 @@ public class Tessellator
     private int normal;
     public static readonly Tessellator instance = new(2097152);
     public bool IsDrawing { get; private set; }
-    private readonly uint[] _vboIds;
+    private readonly IVertexBuffer<Vertex>[] _vertexBuffers;
+    private readonly IVertexArray[] _vertexArrays;
     private int vboIndex;
     private readonly int vboCount = 10;
     private readonly int bufferSize;
@@ -152,8 +154,15 @@ public class Tessellator
     {
         bufferSize = var1;
         rawBuffer = new int[var1];
-        _vboIds = new uint[vboCount];
-        RenderDragon.Api.GenBuffers((uint)vboCount, _vboIds);
+        _vertexBuffers = new IVertexBuffer<Vertex>[vboCount];
+        _vertexArrays = new IVertexArray[vboCount];
+
+        for (int i = 0; i < vboCount; i++)
+        {
+            _vertexBuffers[i] = RenderDragon.CreateVertexBuffer<Vertex>([], BufferUsage.StreamDraw);
+            _vertexArrays[i] = RenderDragon.CreateVertexArray();
+            ConfigureVertexArray(_vertexArrays[i], _vertexBuffers[i]);
+        }
     }
 
     public Tessellator()
@@ -231,7 +240,7 @@ public class Tessellator
         hasNormals = false;
     }
 
-    public unsafe void draw()
+    public void draw()
     {
         if (!IsDrawing)
         {
@@ -250,55 +259,22 @@ public class Tessellator
             if (vertexCount > 0)
             {
                 vboIndex = (vboIndex + 1) % vboCount;
-                RenderDragon.Api.BindBuffer(GLEnum.ArrayBuffer, _vboIds[vboIndex]);
+                IGL gl = RenderDragon.Api;
+                _vertexBuffers[vboIndex].BufferData(MemoryMarshal.Cast<int, Vertex>(rawBuffer.AsSpan(0, rawBufferIndex)), BufferUsage.StreamDraw);
+                _vertexArrays[vboIndex].Bind();
 
-                fixed (int* ptr = rawBuffer)
-                {
-                    RenderDragon.Api.BufferData(GLEnum.ArrayBuffer, (nuint)(rawBufferIndex * 4), ptr, GLEnum.StreamDraw);
-                }
+                gl.EnableVertexAttribArray(0);
+                SetVertexAttributeEnabled(gl, 1, hasColor);
+                SetVertexAttributeEnabled(gl, 2, hasTexture);
+                SetVertexAttributeEnabled(gl, 3, hasNormals);
 
-                if (hasTexture)
-                {
-                    RenderDragon.Api.TexCoordPointer(2, GLEnum.Float, 32, (void*)12);
-                    RenderDragon.Api.EnableClientState(GLEnum.TextureCoordArray);
-                }
-                if (hasColor)
-                {
-                    RenderDragon.Api.ColorPointer(4, ColorPointerType.UnsignedByte, 32, (void*)20);
-                    RenderDragon.Api.EnableClientState(GLEnum.ColorArray);
-                }
-                if (hasNormals)
-                {
-                    RenderDragon.Api.NormalPointer(NormalPointerType.Byte, 32, (void*)24);
-                    RenderDragon.Api.EnableClientState(GLEnum.NormalArray);
-                }
-
-                RenderDragon.Api.VertexPointer(3, GLEnum.Float, 32, (void*)0);
-
-                RenderDragon.Api.EnableClientState(GLEnum.VertexArray);
                 if (drawMode == 7 && convertQuadsToTriangles)
                 {
-                    RenderDragon.Api.DrawArrays(GLEnum.Triangles, 0, (uint)vertexCount);
+                    gl.DrawArrays(GLEnum.Triangles, 0, (uint)vertexCount);
                 }
                 else
                 {
-                    RenderDragon.Api.DrawArrays((GLEnum)drawMode, 0, (uint)vertexCount);
-                }
-
-                RenderDragon.Api.DisableClientState(GLEnum.VertexArray);
-                if (hasTexture)
-                {
-                    RenderDragon.Api.DisableClientState(GLEnum.TextureCoordArray);
-                }
-
-                if (hasColor)
-                {
-                    RenderDragon.Api.DisableClientState(GLEnum.ColorArray);
-                }
-
-                if (hasNormals)
-                {
-                    RenderDragon.Api.DisableClientState(GLEnum.NormalArray);
+                    gl.DrawArrays((GLEnum)drawMode, 0, (uint)vertexCount);
                 }
             }
 
@@ -667,5 +643,37 @@ public class Tessellator
         xOffset += var1;
         yOffset += var2;
         zOffset += var3;
+    }
+
+    private static unsafe void ConfigureVertexArray(IVertexArray vertexArray, IVertexBuffer<Vertex> vertexBuffer)
+    {
+        IGL gl = RenderDragon.Api;
+
+        vertexArray.Bind();
+        vertexBuffer.Bind();
+
+        gl.VertexAttribPointer(0, 3, GLEnum.Float, false, VertexStride, (void*)0);
+        gl.VertexAttribPointer(1, 4, GLEnum.UnsignedByte, true, VertexStride, (void*)20);
+        gl.VertexAttribPointer(2, 2, GLEnum.Float, false, VertexStride, (void*)12);
+        gl.VertexAttribPointer(3, 3, GLEnum.Byte, true, VertexStride, (void*)24);
+
+        gl.EnableVertexAttribArray(0);
+        gl.DisableVertexAttribArray(1);
+        gl.DisableVertexAttribArray(2);
+        gl.DisableVertexAttribArray(3);
+
+        RenderDragon.UnbindVertexArray();
+    }
+
+    private static void SetVertexAttributeEnabled(IGL gl, uint index, bool enabled)
+    {
+        if (enabled)
+        {
+            gl.EnableVertexAttribArray(index);
+        }
+        else
+        {
+            gl.DisableVertexAttribArray(index);
+        }
     }
 }

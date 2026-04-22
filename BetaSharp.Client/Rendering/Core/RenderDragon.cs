@@ -63,7 +63,7 @@ public static class RenderDragon
     public static IFramebuffer CreateFramebuffer(int width, int height) => Backend.CreateFramebuffer(width, height);
     public static IShader CreateShader(string vertexShaderSource, string fragmentShaderSource) => Backend.CreateShader(vertexShaderSource, fragmentShaderSource);
     public static IVertexArray CreateVertexArray() => Backend.CreateVertexArray();
-    public static IVertexBuffer<T> CreateVertexBuffer<T>(Span<T> data) where T : unmanaged => Backend.CreateVertexBuffer(data);
+    public static IVertexBuffer<T> CreateVertexBuffer<T>(Span<T> data, BufferUsage usage = BufferUsage.StaticDraw) where T : unmanaged => Backend.CreateVertexBuffer(data, usage);
     public static ILegacyMesh CreateLegacyMesh(Span<Vertex> vertices, LegacyMeshLayout layout) => Backend.CreateLegacyMesh(vertices, layout);
     public static void CaptureMatrices(out Matrix4X4<float> modelViewMatrix, out Matrix4X4<float> projectionMatrix) => Backend.CaptureMatrices(out modelViewMatrix, out projectionMatrix);
 

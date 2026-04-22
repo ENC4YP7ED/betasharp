@@ -41,6 +41,7 @@ public unsafe interface IGL
     void Disable(EnableCap cap);
     void Disable(GLEnum cap);
     void DisableClientState(GLEnum array);
+    void DisableVertexAttribArray(uint index);
     void DrawArrays(GLEnum mode, int first, uint count);
     void Enable(GLEnum cap);
     void EnableClientState(GLEnum array);
