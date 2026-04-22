@@ -88,6 +88,31 @@ public static class RenderDragon
     public static void BeginHeldTexturedItemTransform(float translateX, float translateY, float uniformScale, float yawDegrees, float rollDegrees, float anchorTranslateX, float anchorTranslateY) =>
         Backend.BeginHeldTexturedItemTransform(translateX, translateY, uniformScale, yawDegrees, rollDegrees, anchorTranslateX, anchorTranslateY);
     public static void EndHeldTexturedItemTransform() => Backend.EndHeldTexturedItemTransform();
+    public static void BeginFirstPersonHeldItemPose(
+        float swingTranslateX,
+        float swingTranslateY,
+        float swingTranslateZ,
+        float itemTranslateX,
+        float itemTranslateY,
+        float itemTranslateZ,
+        float baseYawDegrees,
+        float swingYawDegrees,
+        float swingRollDegrees,
+        float swingPitchDegrees,
+        float uniformScale) =>
+        Backend.BeginFirstPersonHeldItemPose(
+            swingTranslateX,
+            swingTranslateY,
+            swingTranslateZ,
+            itemTranslateX,
+            itemTranslateY,
+            itemTranslateZ,
+            baseYawDegrees,
+            swingYawDegrees,
+            swingRollDegrees,
+            swingPitchDegrees,
+            uniformScale);
+    public static void EndFirstPersonHeldItemPose() => Backend.EndFirstPersonHeldItemPose();
 
     public static void UnbindFramebuffer()
     {

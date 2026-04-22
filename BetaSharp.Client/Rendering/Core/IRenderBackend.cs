@@ -34,6 +34,19 @@ public interface IRenderBackend
     void EndGroundItemSpriteInstance();
     void BeginHeldTexturedItemTransform(float translateX, float translateY, float uniformScale, float yawDegrees, float rollDegrees, float anchorTranslateX, float anchorTranslateY);
     void EndHeldTexturedItemTransform();
+    void BeginFirstPersonHeldItemPose(
+        float swingTranslateX,
+        float swingTranslateY,
+        float swingTranslateZ,
+        float itemTranslateX,
+        float itemTranslateY,
+        float itemTranslateZ,
+        float baseYawDegrees,
+        float swingYawDegrees,
+        float swingRollDegrees,
+        float swingPitchDegrees,
+        float uniformScale);
+    void EndFirstPersonHeldItemPose();
 
     void UnbindFramebuffer();
     void UnbindVertexArray();

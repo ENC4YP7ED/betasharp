@@ -203,6 +203,35 @@ public sealed class OpenGLRenderBackend : IRenderBackend
         Api.Disable(GLEnum.RescaleNormal);
     }
 
+    public void BeginFirstPersonHeldItemPose(
+        float swingTranslateX,
+        float swingTranslateY,
+        float swingTranslateZ,
+        float itemTranslateX,
+        float itemTranslateY,
+        float itemTranslateZ,
+        float baseYawDegrees,
+        float swingYawDegrees,
+        float swingRollDegrees,
+        float swingPitchDegrees,
+        float uniformScale)
+    {
+        Api.PushMatrix();
+        Api.Translate(swingTranslateX, swingTranslateY, swingTranslateZ);
+        Api.Translate(itemTranslateX, itemTranslateY, itemTranslateZ);
+        Api.Rotate(baseYawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Enable(GLEnum.RescaleNormal);
+        Api.Rotate(swingYawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Rotate(swingRollDegrees, 0.0f, 0.0f, 1.0f);
+        Api.Rotate(swingPitchDegrees, 1.0f, 0.0f, 0.0f);
+        Api.Scale(uniformScale, uniformScale, uniformScale);
+    }
+
+    public void EndFirstPersonHeldItemPose()
+    {
+        Api.PopMatrix();
+    }
+
     public void UnbindFramebuffer()
     {
         Api.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
