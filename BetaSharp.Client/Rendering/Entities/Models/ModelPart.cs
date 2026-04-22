@@ -1,5 +1,4 @@
 using BetaSharp.Client.Rendering.Core;
-using BetaSharp.Client.Rendering.Core.OpenGL;
 using BetaSharp.Client.Rendering.Core.Textures;
 
 namespace BetaSharp.Client.Rendering.Entities.Models;
@@ -17,7 +16,7 @@ public class ModelPart
     public float rotateAngleY;
     public float rotateAngleZ;
     private bool compiled;
-    private uint displayList;
+    private ILegacyMesh? _mesh;
     public bool mirror = false;
     public bool visible = true;
     public bool hidden = false;
@@ -35,6 +34,10 @@ public class ModelPart
 
     public void addBox(float x, float y, float z, int width, int height, int depth, float inflation)
     {
+        _mesh?.Dispose();
+        _mesh = null;
+        compiled = false;
+
         corners = new PositionTextureVertex[8];
         faces = new Quad[6];
 
@@ -137,12 +140,12 @@ public class ModelPart
                 {
                     if (rotationPointX == 0.0F && rotationPointY == 0.0F && rotationPointZ == 0.0F)
                     {
-                        RenderDragon.Api.CallList(displayList);
+                        _mesh!.Draw();
                     }
                     else
                     {
                         RenderDragon.Api.Translate(rotationPointX * var1, rotationPointY * var1, rotationPointZ * var1);
-                        RenderDragon.Api.CallList(displayList);
+                        _mesh!.Draw();
                         RenderDragon.Api.Translate(-rotationPointX * var1, -rotationPointY * var1, -rotationPointZ * var1);
                     }
                 }
@@ -165,7 +168,7 @@ public class ModelPart
                         RenderDragon.Api.Rotate(rotateAngleX * (180.0F / (float)Math.PI), 1.0F, 0.0F, 0.0F);
                     }
 
-                    RenderDragon.Api.CallList(displayList);
+                    _mesh!.Draw();
                     RenderDragon.Api.PopMatrix();
                 }
             }
@@ -200,7 +203,7 @@ public class ModelPart
                     RenderDragon.Api.Rotate(rotateAngleZ * (180.0F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
                 }
 
-                RenderDragon.Api.CallList(displayList);
+                _mesh!.Draw();
                 RenderDragon.Api.PopMatrix();
             }
         }
@@ -248,16 +251,17 @@ public class ModelPart
 
     private void compileDisplayList(float scale)
     {
-        displayList = (uint)GLAllocation.generateDisplayLists(1);
-        RenderDragon.Api.NewList(displayList, GLEnum.Compile);
         Tessellator tessellator = Tessellator.instance;
+        tessellator.startCapture(TesselatorCaptureVertexFormat.Default);
 
         for (int faceIndex = 0; faceIndex < faces.Length; ++faceIndex)
         {
             faces[faceIndex].draw(tessellator, scale);
         }
 
-        RenderDragon.Api.EndList();
+        _mesh?.Dispose();
+        using var vertices = tessellator.endCaptureVertices();
+        _mesh = RenderDragon.CreateLegacyMesh(vertices.Span, new LegacyMeshLayout(true, false, true));
         compiled = true;
     }
 }
