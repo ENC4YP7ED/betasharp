@@ -413,7 +413,10 @@ public class GameRenderer
         RenderDragon.Api.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
         RenderDragon.Api.Enable(GLEnum.CullFace);
         renderWorld(tickDelta);
-        Frustum.Instance();
+
+        CaptureCurrentMatrices(out Matrix4X4<float> worldModelViewMatrix, out Matrix4X4<float> worldProjectionMatrix);
+        FrustumData frustum = Frustum.Instance(worldModelViewMatrix, worldProjectionMatrix);
+
         if (_client.Options.renderDistance >= 8)
         {
             applyFog(-1);
@@ -423,15 +426,13 @@ public class GameRenderer
         RenderDragon.Api.Enable(GLEnum.Fog);
         applyFog(1);
 
-        FrustrumCuller frustrumCuller = new();
+        FrustrumCuller frustrumCuller = new(frustum);
         frustrumCuller.SetPosition(entX, entY, entZ);
 
         applyFog(0);
         RenderDragon.Api.Enable(GLEnum.Fog);
         _client.TextureManager.BindTexture(_client.TextureManager.GetTextureId("/terrain.png"));
         Lighting.turnOff();
-
-        CaptureCurrentMatrices(out Matrix4X4<float> worldModelViewMatrix, out Matrix4X4<float> worldProjectionMatrix);
 
         using (Profiler.Begin("SortAndRender"))
         {

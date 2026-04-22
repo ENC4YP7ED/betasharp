@@ -5,10 +5,15 @@ namespace BetaSharp.Client.Rendering;
 public class FrustrumCuller : ICuller
 {
 
-    private readonly FrustumData _frustum = Frustum.Instance();
+    private readonly FrustumData _frustum;
     private double _x;
     private double _y;
     private double _z;
+
+    public FrustrumCuller(FrustumData frustum)
+    {
+        _frustum = frustum;
+    }
 
     public void SetPosition(double x, double y, double z)
     {
