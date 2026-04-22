@@ -92,6 +92,8 @@ public interface IRenderBackend
     void ApplyHumanoidBlockHeldItemPose(float translateY, float translateZ, float uniformScale, float pitchDegrees, float yawDegrees);
     void ApplyHumanoidHandheldItemPose(float translateY, float uniformScale, float pitchDegrees, float yawDegrees, bool rodStyle);
     void ApplyHumanoidGenericHeldItemPose(float translateX, float translateY, float translateZ, float uniformScale, float rollDegrees, float pitchDegrees, float finalRollDegrees);
+    void BeginEntityLabel(float x, float y, float z, float scale, float viewYawDegrees, float viewPitchDegrees);
+    void EndEntityLabel();
 
     void UnbindFramebuffer();
     void UnbindVertexArray();

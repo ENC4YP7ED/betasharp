@@ -198,6 +198,9 @@ public static class RenderDragon
         Backend.ApplyHumanoidHandheldItemPose(translateY, uniformScale, pitchDegrees, yawDegrees, rodStyle);
     public static void ApplyHumanoidGenericHeldItemPose(float translateX, float translateY, float translateZ, float uniformScale, float rollDegrees, float pitchDegrees, float finalRollDegrees) =>
         Backend.ApplyHumanoidGenericHeldItemPose(translateX, translateY, translateZ, uniformScale, rollDegrees, pitchDegrees, finalRollDegrees);
+    public static void BeginEntityLabel(float x, float y, float z, float scale, float viewYawDegrees, float viewPitchDegrees) =>
+        Backend.BeginEntityLabel(x, y, z, scale, viewYawDegrees, viewPitchDegrees);
+    public static void EndEntityLabel() => Backend.EndEntityLabel();
 
     public static void UnbindFramebuffer()
     {

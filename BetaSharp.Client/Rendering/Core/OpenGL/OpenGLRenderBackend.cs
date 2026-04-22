@@ -369,6 +369,21 @@ public sealed class OpenGLRenderBackend : IRenderBackend
         Api.Rotate(finalRollDegrees, 0.0f, 0.0f, 1.0f);
     }
 
+    public void BeginEntityLabel(float x, float y, float z, float scale, float viewYawDegrees, float viewPitchDegrees)
+    {
+        Api.PushMatrix();
+        Api.Translate(x, y, z);
+        Api.Normal3(0.0f, 1.0f, 0.0f);
+        Api.Rotate(-viewYawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Rotate(viewPitchDegrees, 1.0f, 0.0f, 0.0f);
+        Api.Scale(-scale, -scale, scale);
+    }
+
+    public void EndEntityLabel()
+    {
+        Api.PopMatrix();
+    }
+
     public void UnbindFramebuffer()
     {
         Api.BindFramebuffer(FramebufferTarget.Framebuffer, 0);

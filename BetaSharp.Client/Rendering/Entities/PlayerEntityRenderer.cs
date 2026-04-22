@@ -90,12 +90,7 @@ public class PlayerEntityRenderer : LivingEntityRenderer
                 else
                 {
                     TextRenderer var13 = TextRenderer;
-                    RenderDragon.Api.PushMatrix();
-                    RenderDragon.Api.Translate((float)var2 + 0.0F, (float)var4 + 2.3F, (float)var6);
-                    RenderDragon.Api.Normal3(0.0F, 1.0F, 0.0F);
-                    RenderDragon.Api.Rotate(-Dispatcher.PlayerViewY, 0.0F, 1.0F, 0.0F);
-                    RenderDragon.Api.Rotate(Dispatcher.PlayerViewX, 1.0F, 0.0F, 0.0F);
-                    RenderDragon.Api.Scale(-var9, -var9, var9);
+                    RenderDragon.BeginEntityLabel((float)var2, (float)var4 + 2.3F, (float)var6, var9, Dispatcher.PlayerViewY, Dispatcher.PlayerViewX);
                     RenderDragon.Api.Disable(GLEnum.Lighting);
                     RenderDragon.Api.Translate(0.0F, 0.25F / var9, 0.0F);
                     RenderDragon.Api.DepthMask(false);
@@ -117,7 +112,7 @@ public class PlayerEntityRenderer : LivingEntityRenderer
                     RenderDragon.Api.Enable(GLEnum.Lighting);
                     RenderDragon.Api.Disable(GLEnum.Blend);
                     RenderDragon.Api.Color4(1.0F, 1.0F, 1.0F, 1.0F);
-                    RenderDragon.Api.PopMatrix();
+                    RenderDragon.EndEntityLabel();
                 }
             }
         }
