@@ -66,6 +66,8 @@ public static class RenderDragon
     public static IVertexBuffer<T> CreateVertexBuffer<T>(Span<T> data, BufferUsage usage = BufferUsage.StaticDraw) where T : unmanaged => Backend.CreateVertexBuffer(data, usage);
     public static ILegacyMesh CreateLegacyMesh(Span<Vertex> vertices, LegacyMeshLayout layout) => Backend.CreateLegacyMesh(vertices, layout);
     public static void CaptureMatrices(out Matrix4X4<float> modelViewMatrix, out Matrix4X4<float> projectionMatrix) => Backend.CaptureMatrices(out modelViewMatrix, out projectionMatrix);
+    public static void SetTextureCoordinateOffset(float u, float v) => Backend.SetTextureCoordinateOffset(u, v);
+    public static void ResetTextureCoordinateOffset() => Backend.ResetTextureCoordinateOffset();
 
     public static void UnbindFramebuffer()
     {

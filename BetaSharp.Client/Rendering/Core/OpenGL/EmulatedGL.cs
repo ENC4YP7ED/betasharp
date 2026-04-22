@@ -14,6 +14,8 @@ public unsafe class EmulatedGL : LegacyGL
 
     private readonly FixedFunctionShader _shader;
     private bool _useTexture = false;
+    private float _textureCoordinateOffsetU;
+    private float _textureCoordinateOffsetV;
     private uint _currentProgram = 0;
     private bool _alphaTestEnabled = false;
     private float _alphaThreshold = 0.1f;
@@ -52,6 +54,7 @@ public unsafe class EmulatedGL : LegacyGL
         public bool DirtyModelView = true;
         public bool DirtyProjection = true;
         public bool DirtyTextureMatrix = true;
+        public bool DirtyTextureCoordinateOffset = true;
         public bool DirtyLighting = true;
         public bool StateDirty = true;
         public bool DirtyFog = true;
@@ -104,6 +107,7 @@ public unsafe class EmulatedGL : LegacyGL
             _dirtyState.DirtyModelView = true;
             _dirtyState.DirtyProjection = true;
             _dirtyState.DirtyTextureMatrix = true;
+            _dirtyState.DirtyTextureCoordinateOffset = true;
             _dirtyState.StateDirty = true;
             if (_lightingState.LightingEnabled) _dirtyState.DirtyLighting = true;
             if (_fogState.FogEnabled) _dirtyState.DirtyFog = true;
@@ -111,6 +115,11 @@ public unsafe class EmulatedGL : LegacyGL
 
         if (_dirtyState.DirtyProjection) { _shader.SetProjection(_projectionStack.Top); _dirtyState.DirtyProjection = false; }
         if (_dirtyState.DirtyTextureMatrix) { _shader.SetTextureMatrix(_textureStack.Top); _dirtyState.DirtyTextureMatrix = false; }
+        if (_dirtyState.DirtyTextureCoordinateOffset)
+        {
+            _shader.SetTextureCoordinateOffset(_textureCoordinateOffsetU, _textureCoordinateOffsetV);
+            _dirtyState.DirtyTextureCoordinateOffset = false;
+        }
 
         if (_dirtyState.StateDirty)
         {
@@ -509,7 +518,20 @@ public unsafe class EmulatedGL : LegacyGL
         _dirtyState.DirtyModelView = true;
         _dirtyState.DirtyProjection = true;
         _dirtyState.DirtyTextureMatrix = true;
+        _dirtyState.DirtyTextureCoordinateOffset = true;
         base.UseProgram(program);
+    }
+
+    public void SetTextureCoordinateOffset(float u, float v)
+    {
+        _textureCoordinateOffsetU = u;
+        _textureCoordinateOffsetV = v;
+        _dirtyState.DirtyTextureCoordinateOffset = true;
+    }
+
+    public void ResetTextureCoordinateOffset()
+    {
+        SetTextureCoordinateOffset(0.0f, 0.0f);
     }
 
     public override void GetFloat(GLEnum pname, float* data)

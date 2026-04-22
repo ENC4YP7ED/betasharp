@@ -9,6 +9,7 @@ public class FixedFunctionShader
     private readonly int _uModelView;
     private readonly int _uProjection;
     private readonly int _uTextureMatrix;
+    private readonly int _uTexCoordOffset;
     private readonly int _uUseTexture;
     private readonly int _uTexture0;
     private readonly int _uAlphaThreshold;
@@ -41,6 +42,7 @@ layout (location = 3) in vec3 a_Normal;
 uniform mat4 u_ModelView;
 uniform mat4 u_Projection;
 uniform mat4 u_TextureMatrix;
+uniform vec2 u_TexCoordOffset;
 uniform mat3 u_NormalMatrix;
 uniform int u_EnableLighting;
 uniform vec3 u_Light0Dir;
@@ -57,7 +59,7 @@ out float v_FogDist;
 void main()
 {
     vec4 tex = u_TextureMatrix * vec4(a_TexCoord, 0.0, 1.0);
-    v_TexCoord = tex.xy;
+    v_TexCoord = tex.xy + u_TexCoordOffset;
 
     vec4 viewPos = u_ModelView * vec4(a_Position, 1.0);
     gl_Position = u_Projection * viewPos;
@@ -162,6 +164,7 @@ void main()
         _uModelView = _gl.GetUniformLocation(Program, "u_ModelView");
         _uProjection = _gl.GetUniformLocation(Program, "u_Projection");
         _uTextureMatrix = _gl.GetUniformLocation(Program, "u_TextureMatrix");
+        _uTexCoordOffset = _gl.GetUniformLocation(Program, "u_TexCoordOffset");
         _uUseTexture = _gl.GetUniformLocation(Program, "u_UseTexture");
         _uTexture0 = _gl.GetUniformLocation(Program, "u_Texture0");
         _uAlphaThreshold = _gl.GetUniformLocation(Program, "u_AlphaThreshold");
@@ -207,6 +210,9 @@ void main()
 
     public unsafe void SetTextureMatrix(Matrix4X4<float> matrix) =>
         _gl.UniformMatrix4(_uTextureMatrix, 1, false, (float*)&matrix);
+
+    public void SetTextureCoordinateOffset(float u, float v) =>
+        _gl.Uniform2(_uTexCoordOffset, u, v);
 
     public void SetUseTexture(bool useTexture) =>
         _gl.Uniform1(_uUseTexture, useTexture ? 1 : 0);

@@ -15,6 +15,8 @@ public interface IRenderBackend
     IVertexBuffer<T> CreateVertexBuffer<T>(Span<T> data, BufferUsage usage = BufferUsage.StaticDraw) where T : unmanaged;
     ILegacyMesh CreateLegacyMesh(Span<Vertex> vertices, LegacyMeshLayout layout);
     void CaptureMatrices(out Matrix4X4<float> modelViewMatrix, out Matrix4X4<float> projectionMatrix);
+    void SetTextureCoordinateOffset(float u, float v);
+    void ResetTextureCoordinateOffset();
 
     void UnbindFramebuffer();
     void UnbindVertexArray();

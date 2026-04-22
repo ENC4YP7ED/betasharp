@@ -600,11 +600,7 @@ public class WorldRenderer : IWorldEventListener, IDisposable
 
             RenderDragon.Api.PushMatrix();
             RenderDragon.Api.Translate(-var20, var10, -var21);
-
-            RenderDragon.Api.MatrixMode(GLEnum.Texture);
-            RenderDragon.Api.PushMatrix();
-            RenderDragon.Api.Translate(var17, var18, 0.0F);
-            RenderDragon.Api.MatrixMode(GLEnum.Modelview);
+            RenderDragon.SetTextureCoordinateOffset(var17, var18);
 
             if (var10 > -var5 - 1.0F)
             {
@@ -623,10 +619,7 @@ public class WorldRenderer : IWorldEventListener, IDisposable
 
             RenderDragon.Api.Color4(var14 * 0.8F, var15 * 0.8F, var16 * 0.8F, 0.8F);
             _cloudMeshes[3].Draw();
-
-            RenderDragon.Api.MatrixMode(GLEnum.Texture);
-            RenderDragon.Api.PopMatrix();
-            RenderDragon.Api.MatrixMode(GLEnum.Modelview);
+            RenderDragon.ResetTextureCoordinateOffset();
 
             RenderDragon.Api.PopMatrix();
         }

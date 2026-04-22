@@ -72,13 +72,10 @@ public class CreeperEntityRenderer : LivingEntityRenderer
             {
                 float var4 = ent.Age + var3;
                 loadTexture("/armor/power.png");
-                RenderDragon.Api.MatrixMode(GLEnum.Texture2D); //wtf?
-                RenderDragon.Api.LoadIdentity();
                 float var5 = var4 * 0.01F;
                 float var6 = var4 * 0.01F;
-                RenderDragon.Api.Translate(var5, var6, 0.0F);
+                RenderDragon.SetTextureCoordinateOffset(var5, var6);
                 setRenderPassModel(model);
-                RenderDragon.Api.MatrixMode(GLEnum.Modelview);
                 RenderDragon.Api.Enable(GLEnum.Blend);
                 float var7 = 0.5F;
                 RenderDragon.Api.Color4(var7, var7, var7, 1.0F);
@@ -89,9 +86,7 @@ public class CreeperEntityRenderer : LivingEntityRenderer
 
             if (var2 == 2)
             {
-                RenderDragon.Api.MatrixMode(GLEnum.Texture);
-                RenderDragon.Api.LoadIdentity();
-                RenderDragon.Api.MatrixMode(GLEnum.Modelview);
+                RenderDragon.ResetTextureCoordinateOffset();
                 RenderDragon.Api.Enable(GLEnum.Lighting);
                 RenderDragon.Api.Disable(GLEnum.Blend);
             }

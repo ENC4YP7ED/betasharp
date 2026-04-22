@@ -8,9 +8,12 @@ namespace BetaSharp.Client.Rendering.Core.OpenGL;
 
 public sealed class OpenGLRenderBackend : IRenderBackend
 {
+    private readonly EmulatedGL _api;
+
     public OpenGLRenderBackend(GL silkGl)
     {
-        Api = new EmulatedGL(silkGl);
+        _api = new EmulatedGL(silkGl);
+        Api = _api;
     }
 
     public RenderBackendKind Kind => RenderBackendKind.OpenGL;
@@ -46,6 +49,16 @@ public sealed class OpenGLRenderBackend : IRenderBackend
     public void UnbindFramebuffer()
     {
         Api.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+    }
+
+    public void SetTextureCoordinateOffset(float u, float v)
+    {
+        _api.SetTextureCoordinateOffset(u, v);
+    }
+
+    public void ResetTextureCoordinateOffset()
+    {
+        _api.ResetTextureCoordinateOffset();
     }
 
     public void UnbindVertexArray()
