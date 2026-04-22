@@ -81,6 +81,8 @@ public static class RenderDragon
     public static void ApplyNearPlaneOffset(float distance) => Backend.ApplyNearPlaneOffset(distance);
     public static void ApplyCameraOrientation(float pitchDegrees, float yawDegrees) => Backend.ApplyCameraOrientation(pitchDegrees, yawDegrees);
     public static void ApplyEyeHeightOffset(float eyeHeightOffset) => Backend.ApplyEyeHeightOffset(eyeHeightOffset);
+    public static void BeginBillboard(float x, float y, float z, float scale, float viewYawDegrees, float viewPitchDegrees, bool enableRescaleNormal = true) => Backend.BeginBillboard(x, y, z, scale, viewYawDegrees, viewPitchDegrees, enableRescaleNormal);
+    public static void EndBillboard(bool disableRescaleNormal = true) => Backend.EndBillboard(disableRescaleNormal);
 
     public static void UnbindFramebuffer()
     {

@@ -11,10 +11,7 @@ public class FishingBobberEntityRenderer : EntityRenderer
 
     public void render(EntityFish var1, double x, double y, double z, float yaw, float tickDelta)
     {
-        RenderDragon.Api.PushMatrix();
-        RenderDragon.Api.Translate((float)x, (float)y, (float)z);
-        RenderDragon.Api.Enable(GLEnum.RescaleNormal);
-        RenderDragon.Api.Scale(0.5F, 0.5F, 0.5F);
+        RenderDragon.BeginBillboard((float)x, (float)y, (float)z, 0.5F, Dispatcher.PlayerViewY, Dispatcher.PlayerViewX);
         byte var10 = 1;
         byte var11 = 2;
         loadTexture("/particles.png");
@@ -26,8 +23,6 @@ public class FishingBobberEntityRenderer : EntityRenderer
         float var17 = 1.0F;
         float var18 = 0.5F;
         float var19 = 0.5F;
-        RenderDragon.Api.Rotate(180.0F - Dispatcher.PlayerViewY, 0.0F, 1.0F, 0.0F);
-        RenderDragon.Api.Rotate(-Dispatcher.PlayerViewX, 1.0F, 0.0F, 0.0F);
         var12.startDrawingQuads();
         var12.setNormal(0.0F, 1.0F, 0.0F);
         var12.addVertexWithUV((double)(0.0F - var18), (double)(0.0F - var19), 0.0D, (double)var13, (double)var16);
@@ -35,8 +30,7 @@ public class FishingBobberEntityRenderer : EntityRenderer
         var12.addVertexWithUV((double)(var17 - var18), (double)(1.0F - var19), 0.0D, (double)var14, (double)var15);
         var12.addVertexWithUV((double)(0.0F - var18), (double)(1.0F - var19), 0.0D, (double)var13, (double)var15);
         var12.draw();
-        RenderDragon.Api.Disable(GLEnum.RescaleNormal);
-        RenderDragon.Api.PopMatrix();
+        RenderDragon.EndBillboard();
         if (var1.angler != null)
         {
             float var20 = (var1.angler.PrevYaw + (var1.angler.Yaw - var1.angler.PrevYaw) * tickDelta) * (float)Math.PI / 180.0F;

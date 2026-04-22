@@ -151,6 +151,31 @@ public sealed class OpenGLRenderBackend : IRenderBackend
         Api.Translate(0.0f, eyeHeightOffset, 0.0f);
     }
 
+    public void BeginBillboard(float x, float y, float z, float scale, float viewYawDegrees, float viewPitchDegrees, bool enableRescaleNormal = true)
+    {
+        Api.PushMatrix();
+        Api.Translate(x, y, z);
+
+        if (enableRescaleNormal)
+        {
+            Api.Enable(GLEnum.RescaleNormal);
+        }
+
+        Api.Scale(scale, scale, scale);
+        Api.Rotate(180.0f - viewYawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Rotate(-viewPitchDegrees, 1.0f, 0.0f, 0.0f);
+    }
+
+    public void EndBillboard(bool disableRescaleNormal = true)
+    {
+        if (disableRescaleNormal)
+        {
+            Api.Disable(GLEnum.RescaleNormal);
+        }
+
+        Api.PopMatrix();
+    }
+
     public void UnbindFramebuffer()
     {
         Api.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
