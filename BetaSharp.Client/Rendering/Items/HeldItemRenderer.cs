@@ -269,33 +269,39 @@ public class HeldItemRenderer
         }
         else
         {
-            RenderDragon.Api.PushMatrix();
             var14 = 0.8F;
             var8 = var3.getSwingProgress(var1);
             var9 = MathHelper.Sin(var8 * (float)Math.PI);
             var10 = MathHelper.Sin(MathHelper.Sqrt(var8) * (float)Math.PI);
-            RenderDragon.Api.Translate(-var10 * 0.3F, MathHelper.Sin(MathHelper.Sqrt(var8) * (float)Math.PI * 2.0F) * 0.4F, -var9 * 0.4F);
-            RenderDragon.Api.Translate(0.8F * var14, -(12.0F / 16.0F) * var14 - (1.0F - var2) * 0.6F, -0.9F * var14);
-            RenderDragon.Api.Rotate(45.0F, 0.0F, 1.0F, 0.0F);
-            RenderDragon.Api.Enable(GLEnum.RescaleNormal);
-            var8 = var3.getSwingProgress(var1);
+            float swingTranslateX = -var10 * 0.3F;
+            float swingTranslateY = MathHelper.Sin(MathHelper.Sqrt(var8) * (float)Math.PI * 2.0F) * 0.4F;
+            float swingTranslateZ = -var9 * 0.4F;
             var9 = MathHelper.Sin(var8 * var8 * (float)Math.PI);
             var10 = MathHelper.Sin(MathHelper.Sqrt(var8) * (float)Math.PI);
-            RenderDragon.Api.Rotate(var10 * 70.0F, 0.0F, 1.0F, 0.0F);
-            RenderDragon.Api.Rotate(-var9 * 20.0F, 0.0F, 0.0F, 1.0F);
             bindSkinTexture();
-            RenderDragon.Api.Translate(-1.0F, 3.6F, 3.5F);
-            RenderDragon.Api.Rotate(120.0F, 0.0F, 0.0F, 1.0F);
-            RenderDragon.Api.Rotate(200.0F, 1.0F, 0.0F, 0.0F);
-            RenderDragon.Api.Rotate(-135.0F, 0.0F, 1.0F, 0.0F);
-            RenderDragon.Api.Scale(1.0F, 1.0F, 1.0F);
-            RenderDragon.Api.Translate(5.6F, 0.0F, 0.0F);
+            RenderDragon.BeginFirstPersonHandPose(
+                swingTranslateX,
+                swingTranslateY,
+                swingTranslateZ,
+                0.8F * var14,
+                -(12.0F / 16.0F) * var14 - (1.0F - var2) * 0.6F,
+                -0.9F * var14,
+                45.0F,
+                var10 * 70.0F,
+                -var9 * 20.0F,
+                -1.0F,
+                3.6F,
+                3.5F,
+                120.0F,
+                200.0F,
+                -135.0F,
+                5.6F);
             EntityRenderer var15 = EntityRenderDispatcher.Instance.GetEntityRenderObject(_game.Player);
             PlayerEntityRenderer var16 = (PlayerEntityRenderer)var15;
             var10 = 1.0F;
             RenderDragon.Api.Scale(var10, var10, var10);
             var16.DrawFirstPersonHand();
-            RenderDragon.Api.PopMatrix();
+            RenderDragon.EndFirstPersonHandPose();
         }
 
         RenderDragon.Api.Disable(GLEnum.RescaleNormal);

@@ -47,6 +47,24 @@ public interface IRenderBackend
         float swingPitchDegrees,
         float uniformScale);
     void EndFirstPersonHeldItemPose();
+    void BeginFirstPersonHandPose(
+        float swingTranslateX,
+        float swingTranslateY,
+        float swingTranslateZ,
+        float handTranslateX,
+        float handTranslateY,
+        float handTranslateZ,
+        float baseYawDegrees,
+        float swingYawDegrees,
+        float swingRollDegrees,
+        float handTranslatePostX,
+        float handTranslatePostY,
+        float handTranslatePostZ,
+        float handRollDegrees,
+        float handPitchDegrees,
+        float handYawDegrees,
+        float finalTranslateX);
+    void EndFirstPersonHandPose();
 
     void UnbindFramebuffer();
     void UnbindVertexArray();

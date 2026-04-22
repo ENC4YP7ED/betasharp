@@ -113,6 +113,41 @@ public static class RenderDragon
             swingPitchDegrees,
             uniformScale);
     public static void EndFirstPersonHeldItemPose() => Backend.EndFirstPersonHeldItemPose();
+    public static void BeginFirstPersonHandPose(
+        float swingTranslateX,
+        float swingTranslateY,
+        float swingTranslateZ,
+        float handTranslateX,
+        float handTranslateY,
+        float handTranslateZ,
+        float baseYawDegrees,
+        float swingYawDegrees,
+        float swingRollDegrees,
+        float handTranslatePostX,
+        float handTranslatePostY,
+        float handTranslatePostZ,
+        float handRollDegrees,
+        float handPitchDegrees,
+        float handYawDegrees,
+        float finalTranslateX) =>
+        Backend.BeginFirstPersonHandPose(
+            swingTranslateX,
+            swingTranslateY,
+            swingTranslateZ,
+            handTranslateX,
+            handTranslateY,
+            handTranslateZ,
+            baseYawDegrees,
+            swingYawDegrees,
+            swingRollDegrees,
+            handTranslatePostX,
+            handTranslatePostY,
+            handTranslatePostZ,
+            handRollDegrees,
+            handPitchDegrees,
+            handYawDegrees,
+            finalTranslateX);
+    public static void EndFirstPersonHandPose() => Backend.EndFirstPersonHandPose();
 
     public static void UnbindFramebuffer()
     {

@@ -232,6 +232,43 @@ public sealed class OpenGLRenderBackend : IRenderBackend
         Api.PopMatrix();
     }
 
+    public void BeginFirstPersonHandPose(
+        float swingTranslateX,
+        float swingTranslateY,
+        float swingTranslateZ,
+        float handTranslateX,
+        float handTranslateY,
+        float handTranslateZ,
+        float baseYawDegrees,
+        float swingYawDegrees,
+        float swingRollDegrees,
+        float handTranslatePostX,
+        float handTranslatePostY,
+        float handTranslatePostZ,
+        float handRollDegrees,
+        float handPitchDegrees,
+        float handYawDegrees,
+        float finalTranslateX)
+    {
+        Api.PushMatrix();
+        Api.Translate(swingTranslateX, swingTranslateY, swingTranslateZ);
+        Api.Translate(handTranslateX, handTranslateY, handTranslateZ);
+        Api.Rotate(baseYawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Enable(GLEnum.RescaleNormal);
+        Api.Rotate(swingYawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Rotate(swingRollDegrees, 0.0f, 0.0f, 1.0f);
+        Api.Translate(handTranslatePostX, handTranslatePostY, handTranslatePostZ);
+        Api.Rotate(handRollDegrees, 0.0f, 0.0f, 1.0f);
+        Api.Rotate(handPitchDegrees, 1.0f, 0.0f, 0.0f);
+        Api.Rotate(handYawDegrees, 0.0f, 1.0f, 0.0f);
+        Api.Translate(finalTranslateX, 0.0f, 0.0f);
+    }
+
+    public void EndFirstPersonHandPose()
+    {
+        Api.PopMatrix();
+    }
+
     public void UnbindFramebuffer()
     {
         Api.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
